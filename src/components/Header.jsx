@@ -10,8 +10,10 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/auth.context";
 
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { async } from "@firebase/util";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const pages = ["Men", "Women", "Bags", "About Us", "Services"];
@@ -20,7 +22,12 @@ export const Header = () => {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { user, isLoggedIn, isCheckingAuth, logout } = useAuth();
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -73,12 +80,21 @@ export const Header = () => {
               Bata
             </Typography>
           </Box>
-          <Button variant="contained" onClick={() => navigate("/login")}>
-            Login
-          </Button>
-          <Button variant="contained" onClick={() => navigate("/register")}>
-            Register
-          </Button>
+
+          {!user && !isLoggedIn && !isCheckingAuth ? (
+            <>
+              <Button variant="contained" onClick={() => navigate("/login")}>
+                Login
+              </Button>
+              <Button variant="contained" onClick={() => navigate("/register")}>
+                Register
+              </Button>
+            </>
+          ) : (
+            <Button variant="contained" onClick={handleLogout}>
+              Logout
+            </Button>
+          )}
           <IconButton>
             <AiOutlineShoppingCart
               color="black"

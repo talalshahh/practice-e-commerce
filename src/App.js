@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
 import { AuthProvider } from "./context/auth.context";
+import { RoutesLayout } from "./components/RoutesLayout";
 
 function App() {
   return (
@@ -10,8 +9,7 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/*" element={<RoutesLayout />} />
           </Routes>
         </Layout>
       </BrowserRouter>
