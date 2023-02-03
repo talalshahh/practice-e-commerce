@@ -4,26 +4,29 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from "react";
+} from 'react';
 import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-} from "firebase/auth";
+} from 'firebase/auth';
 
-import firebase from "../firebase/config";
-import { profileCreationORLoadUrl } from "../api/private/user";
+import firebase from '../firebase/config';
+import {
+  handleUserProfileUrl,
+  profileCreationORLoadUrl,
+} from '../api/private/user';
 
 export const authContext = createContext(undefined);
 
-authContext.displayName = "e-commerce-web context";
+authContext.displayName = 'e-commerce-web context';
 
 export const useAuth = () => {
   const context = useContext(authContext);
   if (context === undefined) {
-    throw new Error("UseAuth must be used within auth provider");
+    throw new Error('UseAuth must be used within auth provider');
   }
   return context;
 };
@@ -44,11 +47,16 @@ export const AuthProvider = (props) => {
     if (!response) return;
     setUserProfile(response.user);
   };
-
+  const handleUserProfile = async () => {
+    setUserProfileLoading(true);
+    const response = await handleUserProfileUrl();
+    if (!response) return;
+    setUserProfile(response.user);
+  };
   const checkAuthState = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        handleProfileCreationOrLoad();
+        handleUserProfile();
         setUser(user);
         setisLoggedIn(true);
         setIsCheckingAuth(false);
@@ -77,26 +85,27 @@ export const AuthProvider = (props) => {
       })
       .catch((error) => {
         let errorMessage = error.message;
-        if (errorMessage.includes === "wrong-password") {
-          console.log("Invalid Email / Password");
-        } else if (errorMessage.includes === "user-not-found") {
-          console.log("Invalid Email:User Not found");
+        if (errorMessage.includes === 'wrong-password') {
+          console.log('Invalid Email / Password');
+        } else if (errorMessage.includes === 'user-not-found') {
+          console.log('Invalid Email:User Not found');
         }
-        console.log(errorMessage, "error");
+        console.log(errorMessage, 'error');
         setLoading(false);
       });
   };
-  const signUpwithEmail = ({ email, password }) => {
+  const signUpwithEmail = ({ email, password, navigate }) => {
     setLoading(true);
-    console.log(email, "email");
-    console.log(password, "password");
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
         setLoading(false);
+        handleProfileCreationOrLoad();
+        logout();
+        navigate('/');
       })
       .catch((error) => {
         let errorMessage = error.message;
-        console.log("Registration Failed: ", errorMessage);
+        console.log('Registration Failed: ', errorMessage);
         setLoading(false);
       });
   };
@@ -109,7 +118,7 @@ export const AuthProvider = (props) => {
     () => ({
       user,
       userProfile,
-      handleProfileCreationOrLoad,
+      handleUserProfile,
       isLoggedIn,
       isCheckingAuth,
       logout,
