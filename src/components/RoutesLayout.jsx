@@ -6,6 +6,8 @@ import { Register } from "../pages/Register";
 import { Dashboard } from "../components/Dashboard";
 import { DashProducts } from "../pages/DashProducts";
 import { Cart } from "../pages/Cart";
+import { Favourites } from "../pages/Favourites";
+import { ProductDetails } from "../pages/ProductDetails";
 
 export const RoutesLayout = () => {
   const { user, isLoggedIn, isCheckingAuth } = useAuth();
@@ -21,9 +23,11 @@ export const RoutesLayout = () => {
       )}
       {user && isLoggedIn && !isCheckingAuth && (
         <Routes>
-          {/* <Route path="/" element={<Dashboard />} /> */}
           <Route path="/" element={<DashProducts />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/dashproducts" element={<DashProducts />} />
+          <Route path="/favourites" element={<Favourites />} />
+          <Route path="/product-details/:id" element={<ProductDetails />} />
         </Routes>
       )}
     </>

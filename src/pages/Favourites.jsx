@@ -5,7 +5,7 @@ import { getProducts } from "../api/public/products";
 import { Link } from "react-router-dom";
 import { Dashboard } from "../components/Dashboard";
 
-export const DashProducts = () => {
+export const Favourites = () => {
   const [data, setData] = useState([]);
 
   const getProductData = async () => {
@@ -38,7 +38,7 @@ export const DashProducts = () => {
       >
         {data &&
           data.map((content, idx) => (
-            <Link to={"/product-details/" + content._id}>
+            <Link>
               <Box
                 key={idx}
                 className="card"
@@ -61,7 +61,7 @@ export const DashProducts = () => {
 
                 <Typography
                   variant="h6"
-                  sx={{ textAlign: "center", color: "black" }}
+                  sx={{ textAlign: "center", color: "white" }}
                 >
                   {content.name}
                 </Typography>

@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
 import { Typography, Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
+  const [focusItem, setFocusItem] = useState("Products");
   const menu = [
     {
       name: "Products",
-      path: "",
+      path: "/dashProducts",
     },
     {
       name: "Favourites",
-      path: "",
+      path: "/favourites",
     },
     {
       name: "Cart",
@@ -52,12 +53,14 @@ export const Dashboard = () => {
                 backgroundColor: "white",
                 borderRadius: "0.2rem",
               },
-              // "&: focus": {
-              //   backgroundColor: "black",
-              // },
+              color: focusItem && "#BF0A30",
+              backgroundColor: focusItem && "white",
             }}
             key={idx}
-            onClick={() => navigate(item.path)}
+            onClick={() => {
+              setFocusItem(item.name);
+              navigate(item.path);
+            }}
           >
             {item.name}
           </Typography>

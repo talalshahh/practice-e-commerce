@@ -1,4 +1,5 @@
 import api from "../publicConfig";
+
 const endpoint = "/products";
 export const getProducts = async () => {
   try {
