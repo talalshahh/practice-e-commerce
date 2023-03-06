@@ -8,6 +8,7 @@ import { DashProducts } from "../pages/DashProducts";
 import { Cart } from "../pages/Cart";
 import { Favourites } from "../pages/Favourites";
 import { ProductDetails } from "../pages/ProductDetails";
+import { StripePayment } from "../pages/StripePayment";
 
 export const RoutesLayout = () => {
   const { user, isLoggedIn, isCheckingAuth } = useAuth();
@@ -28,6 +29,7 @@ export const RoutesLayout = () => {
           <Route path="/dashproducts" element={<DashProducts />} />
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/product-details/:id" element={<ProductDetails />} />
+          <Route path="/stripepayment" element={<StripePayment />} />
         </Routes>
       )}
     </>

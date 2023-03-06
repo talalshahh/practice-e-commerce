@@ -7,12 +7,19 @@ import { getProducts } from "../api/public/products";
 import { useEffect } from "react";
 import { Counter } from "../components/Counter";
 import { Dashboard } from "../components/Dashboard";
+import { getCartProducts } from "../api/private/cart";
+import { useAuth } from "../context/auth.context";
+import { UpdateCounter } from "../components/UpdateCounter";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const Cart = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [data, setdata] = useState(null);
-  console.log("working");
-  const getProductData = async () => {
-    const response = await getProducts();
+  // console.log("working");
+  console.log(data, "daat");
+  const getCartProductData = async () => {
+    const response = await getCartProducts(user.uid);
     if (response && response.status === 200) {
       setdata(response.data);
     } else {
@@ -20,7 +27,7 @@ export const Cart = () => {
     }
   };
   useEffect(() => {
-    getProductData();
+    getCartProductData();
   }, []);
 
   return (
@@ -39,7 +46,7 @@ export const Cart = () => {
           <Box sx={{ display: "flex", marginTop: "2rem" }}>
             <Box flexGrow={0.7}>
               {data &&
-                data.map((content, idx) => (
+                data?.products?.map((content, idx) => (
                   <Box sx={{ display: "flex" }} key={idx}>
                     <Box
                       sx={{
@@ -114,7 +121,7 @@ export const Cart = () => {
                             marginLeft: "5px",
                           }}
                         >
-                          {content.price}
+                          {content.unitPrice}
                         </Typography>
                       </Box>
                     </Box>
@@ -133,7 +140,13 @@ export const Cart = () => {
                       >
                         Quantity
                       </Typography>
-                      <Counter />
+                      <UpdateCounter
+                        cartId={data._id}
+                        product={content}
+                        totalPrice={data?.totalPrice}
+                        totalItems={data?.totalItems}
+                        getUpdatedProduct={getCartProductData}
+                      />
                     </Box>
                     <Box
                       sx={{
@@ -159,7 +172,9 @@ export const Cart = () => {
                             wordWrap: "break-word",
                             marginLeft: "5px",
                           }}
-                        ></Typography>
+                        >
+                          {content.unitPrice * content.quantity}
+                        </Typography>
                       </Box>
                     </Box>
                   </Box>
@@ -203,7 +218,7 @@ export const Cart = () => {
                         fontWeight: "12px",
                       }}
                     >
-                      52222
+                      {data?.totalPrice}
                     </Typography>
                     <Typography
                       sx={{
@@ -243,12 +258,17 @@ export const Cart = () => {
                         fontSize: "25px",
                         fontWeight: "12px",
                       }}
-                    ></Typography>
+                    >
+                      {data?.totalPrice + 99}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
               <Button
                 variant="text"
+                onClick={() =>
+                  navigate("/stripepayment", { state: data.totalPrice + 99 })
+                }
                 sx={{
                   width: "100%",
                   height: "50px",

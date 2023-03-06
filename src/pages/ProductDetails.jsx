@@ -45,6 +45,9 @@ export const ProductDetails = () => {
       totalPrice: cartTotal,
     };
     const response = await cartCreationAndUpdate(cartData);
+    if (response && response.status == 200) {
+      toast.success("Product is added in cart");
+    }
   };
   useEffect(() => {
     getProductData();
