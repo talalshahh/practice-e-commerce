@@ -1,37 +1,50 @@
-import { Elements, PaymentElement } from "@stripe/react-stripe-js";
+import React from "react";
+import {
+  CardElement,
+  Elements,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { payment } from "../api/private/payment";
 import { loadStripe } from "@stripe/stripe-js";
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { getPaymentIntent } from "../api/private/payment";
 
-export const StripePayment = () => {
-  const location = useLocation();
-  const [clientSecret, setClientSecret] = useState("");
-  const stripePromise = loadStripe(
-    "pk_test_51MgoGPBEmKccR1EIHKhoCWDvV3dy9fbLG5bOvOI4wik3N4KeguPaWXAxsGSTe46Dsgz048V7R0rXTWNDb9Sm881I00MaLvamoy"
-  );
-  useEffect(() => {
-    fetchPaymentIntent();
-  }, []);
-  const fetchPaymentIntent = async () => {
-    const response = await getPaymentIntent();
-    if (response && response.status === 200) {
-      setClientSecret(response.data.client_secret);
-    } else {
-      console.log(response.data, "err");
+const CheckoutForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement),
+    });
+
+    if (!error) {
+      const { id } = paymentMethod;
+      const response = await payment(id);
+      if (response && response.status === 200) {
+        console.log("Payment was successful");
+      } else {
+        console.log("Payment Failed");
+      }
     }
-  };
-  const options = {
-    // passing the client secret obtained from the server
-    clientSecret: clientSecret,
   };
 
   return (
-    <Elements stripe={stripePromise} options={options}>
-      <form>
-        <PaymentElement />
-        <button>Submit</button>
-      </form>
+    <form onSubmit={handleSubmit}>
+      <CardElement />
+      <button type="submit">Pay</button>
+    </form>
+  );
+};
+
+const stripePromise = loadStripe("publishable_key");
+const StripePayment = () => {
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
     </Elements>
   );
 };
+
+export default StripePayment;

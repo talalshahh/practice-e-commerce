@@ -1,15 +1,13 @@
-import { async } from "@firebase/util";
-import { json } from "react-router-dom";
 import api from "../privateConfig";
 
 const endpoint = "/payment";
 
-export const getPaymentIntent = async () => {
+export const payment = async (id) => {
   try {
-    let url = endpoint + "/secret";
-    let response = await api.get(url);
-    return response;
+    const url = endpoint + "/";
+    const { data } = await api.post(url, { id, amount: 100 });
+    console.log(data);
   } catch (error) {
-    console.log(error, "err");
+    console.log(error);
   }
 };

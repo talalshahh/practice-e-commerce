@@ -8,7 +8,7 @@ import { DashProducts } from "../pages/DashProducts";
 import { Cart } from "../pages/Cart";
 import { Favourites } from "../pages/Favourites";
 import { ProductDetails } from "../pages/ProductDetails";
-import { StripePayment } from "../pages/StripePayment";
+import StripePayment from "../pages/StripePayment";
 
 export const RoutesLayout = () => {
   const { user, isLoggedIn, isCheckingAuth } = useAuth();
