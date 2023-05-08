@@ -22,6 +22,7 @@ const CheckoutForm = () => {
     if (!error) {
       const { id } = paymentMethod;
       const response = await payment(id);
+      console.log(response);
       if (response && response.status === 200) {
         console.log("Payment was successful");
       } else {
@@ -38,7 +39,9 @@ const CheckoutForm = () => {
   );
 };
 
-const stripePromise = loadStripe("publishable_key");
+const stripePromise = loadStripe(
+  "pk_test_51MgoGPBEmKccR1EIHKhoCWDvV3dy9fbLG5bOvOI4wik3N4KeguPaWXAxsGSTe46Dsgz048V7R0rXTWNDb9Sm881I00MaLvamoy"
+);
 const StripePayment = () => {
   return (
     <Elements stripe={stripePromise}>

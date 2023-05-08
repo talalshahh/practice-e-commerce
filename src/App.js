@@ -6,6 +6,9 @@ import { ProductDetails } from "./pages/ProductDetails";
 import { Payment } from "./pages/Payment";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SideMenu } from "./components/SideMenuOnFocus";
+import Menu from "./components/Menu";
+import { Login } from "./pages/Login";
 
 function App() {
   return (

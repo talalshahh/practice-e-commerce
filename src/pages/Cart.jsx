@@ -6,7 +6,6 @@ import image from "../assets/images/img.jpeg";
 import { getProducts } from "../api/public/products";
 import { useEffect } from "react";
 import { Counter } from "../components/Counter";
-import { Dashboard } from "../components/Dashboard";
 import { getCartProducts } from "../api/private/cart";
 import { useAuth } from "../context/auth.context";
 import { UpdateCounter } from "../components/UpdateCounter";
@@ -35,7 +34,7 @@ export const Cart = () => {
       <Box
         sx={{ display: "flex", width: "100%", justifyContent: "space-between" }}
       >
-        <Dashboard />
+        {/* <Dashboard /> */}
         <Container maxWidth="xl">
           {/* <Typography
             variant="h2"

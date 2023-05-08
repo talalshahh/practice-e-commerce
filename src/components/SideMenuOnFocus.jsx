@@ -3,9 +3,15 @@ import { Box } from "@mui/system";
 import { Typography, Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-export const Dashboard = () => {
+export const SideMenu = () => {
   const navigate = useNavigate();
   const [focusItem, setFocusItem] = useState("Products");
+  const [activeIndex, setActiveIndex] = useState(0); // set the initial active index to the first menu item
+
+  const handleMenuItemClick = (index) => {
+    setActiveIndex(index);
+  };
+
   const menu = [
     {
       name: "Products",
@@ -24,6 +30,14 @@ export const Dashboard = () => {
       path: "",
     },
   ];
+  const getMenuStyle = (index) => {
+    if (index === activeIndex) {
+      return { backgroundColor: "white", color: "red" }; // set the background color to the bgColor property of the active menu item
+    } else {
+      return {}; // return an empty object for the inactive menu items
+    }
+  };
+
   return (
     <>
       <Box
@@ -33,13 +47,13 @@ export const Dashboard = () => {
           background: "#BF0A30",
           width: "15%",
           alignItems: "center",
-          height: "100vh",
+          height: "150vh",
           margin: "0",
           padding: "0",
           border: "1px solid black",
         }}
       >
-        {menu.map((item, idx) => (
+        {menu.map((item, index) => (
           <Typography
             sx={{
               color: "white",
@@ -48,18 +62,17 @@ export const Dashboard = () => {
               fontWeight: "2ch",
               width: "100%",
               textAlign: "center",
-              "&: hover": {
-                color: "#BF0A30",
-                backgroundColor: "white",
-                borderRadius: "0.2rem",
-              },
-              color: focusItem && "#BF0A30",
-              backgroundColor: focusItem && "white",
+              // "&: hover": {
+              //   color: "#BF0A30",
+              //   borderRadius: "0.2rem",
+              // },
             }}
-            key={idx}
+            style={getMenuStyle(index)}
+            key={index}
             onClick={() => {
               setFocusItem(item.name);
               navigate(item.path);
+              handleMenuItemClick(index);
             }}
           >
             {item.name}

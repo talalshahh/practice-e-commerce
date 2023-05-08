@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
+import SideMenu from "./SideMenu";
 
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { async } from "@firebase/util";
@@ -56,25 +57,27 @@ export const Header = () => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            // justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Box flexGrow={0.75}>
+          <Box flexGrow={0.5}>
+            <SideMenu />
+          </Box>
+          <Box flexGrow={0.5}>
             <Typography
               variant="h6"
               component="a"
               href="/"
               sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
+                // mr: 2,
+                display: { md: "flex" },
                 fontWeight: "bolder",
                 letterSpacing: ".2rem",
                 color: "red",
-                fontSize: "50px",
+                fontSize: { xs: "35px", md: "50px" },
                 textDecoration: "none",
                 width: "8%",
-                marginLeft: "48%",
               }}
             >
               Bata
@@ -82,83 +85,45 @@ export const Header = () => {
           </Box>
 
           {!user && !isLoggedIn && !isCheckingAuth ? (
-            <>
-              <Button variant="contained" onClick={() => navigate("/login")}>
-                Login
-              </Button>
-              <Button variant="contained" onClick={() => navigate("/register")}>
-                Register
-              </Button>
-            </>
-          ) : (
-            <Button variant="contained" onClick={handleLogout}>
-              Logout
-            </Button>
-          )}
-          <IconButton>
-            <AiOutlineShoppingCart
-              color="black"
-              com
-              style={{ fontSize: "20px", marginRight: "10px" }}
-            />
-          </IconButton>
-
-          <Box>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+            <Button
+              variant="contained"
+              sx={{
+                textAlign: "center",
+                backgroundColor: "red",
+                color: "white",
+                marginTop: "1rem",
+                "&:hover": {
+                  backgroundColor: "Black",
+                  color: "white",
+                },
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              onClick={() => navigate("/login")}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Box>
-        <Box
-          className="appBarMenu"
-          sx={{
-            display: { xs: "none", md: "flex" },
-            justifyContent: "center",
-            alignItems: "center",
-            paddingBottom: "1vh",
-          }}
-        >
-          <Box>
-            {pages.map((page, idx) => (
-              <Typography
-                key={idx}
-                variant="h5"
-                component="a"
-                href="/"
+              Login
+            </Button>
+          ) : (
+            <>
+              <AiOutlineShoppingCart
+                size={25}
+                style={{ color: "black", marginRight: "10px" }}
+              />
+              <Button
+                variant="contained"
+                onClick={handleLogout}
                 sx={{
-                  color: "black",
-                  marginRight: "6vh",
-                  textDecoration: "none",
+                  backgroundColor: "red",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "white",
+                    color: "red",
+                    border: "1px solid red",
+                  },
                 }}
               >
-                {page}
-              </Typography>
-            ))}
-          </Box>
+                Logout
+              </Button>
+            </>
+          )}
         </Box>
       </Container>
     </AppBar>

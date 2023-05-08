@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 
 import { getProducts } from "../api/public/products";
 import { Link } from "react-router-dom";
-import { Dashboard } from "../components/Dashboard";
 
 export const Favourites = () => {
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const getProductData = async () => {
-    const response = await getProducts();
+    const response = await getProducts(currentPage);
 
     if (response && response.status === 200) {
       setData(response.data);
@@ -20,13 +20,12 @@ export const Favourites = () => {
 
   useEffect(() => {
     getProductData();
-  }, []);
+  }, [currentPage]);
   return (
     <Box
       sx={{ display: "flex", width: "100%", justifyContent: "space-between" }}
     >
-      <Dashboard />
-
+      {/* <Dashboard /> */}
       <Box
         sx={{
           display: "flex",

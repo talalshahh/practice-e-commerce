@@ -1,10 +1,11 @@
 import api from "../publicConfig";
 
 const endpoint = "/products";
-export const getProducts = async () => {
+export const getProducts = async (currentPage) => {
   try {
+    console.log(currentPage, "currentPage");
     const url = endpoint + "/";
-    const result = await api.get(url);
+    const result = await api.get(url, { params: { currentPage } });
     return result;
   } catch (error) {
     return error.response;
